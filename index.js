@@ -1,15 +1,14 @@
 const express = require('express');
 const cors = require('cors');
-const app =express()
-const port= process.env.PORT || 5000
+const app = express()
+const port = process.env.PORT || 5000
 const { MongoClient, ServerApiVersion } = require('mongodb');
 require('dotenv').config()
 
 app.use(express.json())
 app.use(cors())
 
-// 
-// 
+
 
 
 
@@ -32,9 +31,13 @@ async function run() {
     const taskCollection = client.db("taskDB").collection("tasks");
 
     app.post('/tasks', async (req, res) => {
-        const task = req.body
-        const result = await taskCollection.insertOne(task)
-        res.send(result)
+      const task = req.body
+      const result = await taskCollection.insertOne(task)
+      res.send(result)
+    })
+    app.get('/tasks', async (req, res) => {
+      const result = await taskCollection.find().toArray()
+      res.send(result)
     })
 
 
@@ -52,10 +55,10 @@ run().catch(console.dir);
 
 
 
-app.get('/',(req,res)=>{
-    res.send('Task management server is Running')
+app.get('/', (req, res) => {
+  res.send('Task management server is Running')
 })
 
-app.listen(port , ()=>{
-    console.log(`server is running on PORT : ${port}`)
+app.listen(port, () => {
+  console.log(`server is running on PORT : ${port}`)
 })
